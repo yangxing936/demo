@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "Img";
+}
+
+<h2>Img</h2>
+<script src="~/Scripts/ajaxfileupload.js"></script>
+<div>
+    <div>
+        图片汇报:
+    </div>
+    <div>
+        <input style="display:initial;" type="file" alt="插入图片" id="uploadImage" onchange="ajaxFileUpload()" name="uploadImage" />
+        <span id="appendContent">
+        </span>
+    </div>
+</div>
+<script>
+    //文件上传
+    function ajaxFileUpload() {
+        //图片格式验证
+        var x = document.getElementById("uploadImage");
+        if (!x || !x.value) return;
+        var patn = /\.jpg$|\.jpeg$|\.png$|\.gif$/i;
+        if (!patn.test(x.value)) {
+            alert("您选择的似乎不是图像文件。");
+            x.value = "";
+            return;
+        }
+
+        var elementIds = ["uploadImage"]; //flag为id、name属性名
+        $.ajaxFileUpload({
+            url: '/Default/SaveImage',//上传的url，根据自己设置
+            type: 'post',
+            secureuri: false, //一般设置为false
+            fileElementId: 'uploadImage', // 上传文件的id、name属性名
+            dataType: 'text', //返回值类型，一般设置为json、application/json
+            elementIds: elementIds, //传递参数到服务器
+            success: function (data, status) {
+                //alert(data);
+                if (data == "Error1") {
+                    alert("文件太大，请上传不大于5M的文件！");
+                    return;
+                } else if (data == "Error2") {
+                    alert("上传失败，请重试！");
+                    return;
+                } else {
+                    //这里为上传并做一下请求显示处理，返回的data是对应上传的文件名
+                    $("#appendContent").append("<img  width='200' height='200' src='" + "../UploadFile/TaskReportImages/" + data + "' onclick='RemoveImg(this)'/>");
+
+                }
+            },
+            error: function (data, status, e) {
+                alert(e);
+            }
+        });
+    }
+    //删除图片
+    function RemoveImg(obj) {
+        $(obj).remove();
+    }
+</script>
+
