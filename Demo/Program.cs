@@ -195,35 +195,37 @@ namespace Demo
 
 
 
-            var res= Math.Round((20.0 / 18), 2);
+            var res = Math.Round((20.0 / 18), 2);
 
-            Data data = new Data()
-            {
-                I1 = "20200316123428030",//业务流水号
-                I2 = DateTime.Now.ToString("yyMMdd"),//小票日期
-                I3 = "0",//税盘分机号
-                I4 = "1",//发票项目
-                I5 = "109.00".ToString(),
-                I6 = "109.00".ToString(),
-                I7 = "",
-                I8 = ""
-               
-            };
+            //Data data = new Data()
+            //{
+            //    I1 = "20200316123428030",//业务流水号
+            //    I2 = DateTime.Now.ToString("yyMMdd"),//小票日期
+            //    I3 = "0",//税盘分机号
+            //    I4 = "1",//发票项目
+            //    I5 = "109.00".ToString(),
+            //    I6 = "109.00".ToString(),
+            //    I7 = "",
+            //    I8 = ""
+
+            //};
 
             //string mw1 = $"I1={data.I1}&I2={data.I2}&I3={data.I3}&I4={data.I4}&I5={data.I5}&I6={data.I6}";//密文(3DES加密)
-            string mw1 = $"I1={data.I1}&I2={data.I2}&I3={data.I3}&I4={data.I4}&I5={data.I5}";//密文(3DES加密)
-            string t = "500102201007206608";//税号
+            //string mw1 = $"I1={data.I1}&I2={data.I2}&I3={data.I3}&I4={data.I4}&I5={data.I5}";//密文(3DES加密)
+            //string t = "500102201007206608";//税号
 
-            //3Des 加密的秘钥由 MD5(税号)前 12 位，后 12 位拼接成 24 位加密 KEY。
-            var md5str = Md5Helper.Create(t); //MD5(税号)
-            string desKey = md5str.Substring(0, 12) + md5str.Substring(md5str.Length - 12, 12);//后 12 位拼接成 24 位加密 KEY
-            string mw = DESHelper.Encrypt3Des(mw1, desKey.ToUpper());//3DES加密 
+            ////3Des 加密的秘钥由 MD5(税号)前 12 位，后 12 位拼接成 24 位加密 KEY。
+            //var md5str = Md5Helper.Create(t); //MD5(税号)
+            //string desKey = md5str.Substring(0, 12) + md5str.Substring(md5str.Length - 12, 12);//后 12 位拼接成 24 位加密 KEY
+            //string mw = DESHelper.Encrypt3Des(mw1, desKey.ToUpper());//3DES加密 
             //mw = UrlEncode(mw);
 
-            var newurl = "http://f.gooagoo.com/002/8" + "?t=" + t + "_LW" + "&mw=" + mw; ;
-            Bitmap imgCode1 = Create_ImgCode(newurl, 5);
-            SaveImg("C:\\Users\\Administrator\\Desktop\\截图\\", imgCode1, "电子发票二维码1", 320, 320);//本地保存图片
+            //var newurl = "http://f.gooagoo.com/002/8" + "?t=" + t + "_LW" + "&mw=" + mw+ "Z41onnkrsumCb/Lujlr2sJYOWQlH1JJ2qUmVwHwMfxnGuKPS/zT3JiWoVQsErwI8STuHTT87H2I=";
+            //var c = newurl.Length;
+            //Bitmap imgCode1 = Create_ImgCode(newurl, 200);
+            //SaveImg("C:\\Users\\Administrator\\Desktop\\截图\\", imgCode1, "1", 400, 400);//本地保存图片
 
+            //var a = 1;
 
 
 
@@ -333,33 +335,33 @@ namespace Demo
             //var data = Sign(JsonConvert.SerializeObject(str));
 
 
+            LogHelper.Log("123");
 
+            DateTime dateTime = DateTime.Parse("2020-09-21 11:07:34");
+            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
+            long t = (dateTime.Ticks - startTime.Ticks) / 10000;   //除10000调整为13位      
+            var newa = new
+            {
+                platformDiscount = 0,
+                appOrderNo = "182177860581601205431675",
+                payTime = t,
+                subject = "HDLY002",
+                orderStatus = "PAY_SUC",
+                discountAmount = 0,
+                channelDiscount = 0,
+                paymentWay = "QRCODE",
+                buyerId = "o5WHe4qfPGsplEAPbh2myqNuRtLo",
+                outOrderNo = "4200000678202009188094601099",
+                paymentChannel = "WECHAT",
+                localOrderNo = "TCWX2009181730594053900616",
+                totalAmount = 1,
+                receiveAmount = 1
+            };
 
-            //DateTime dateTime = DateTime.Parse("2020-09-21 11:07:34");
-            //System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
-            //long t = (dateTime.Ticks - startTime.Ticks) / 10000;   //除10000调整为13位      
-            //var newa = new
-            //{
-            //    platformDiscount = 0,
-            //    appOrderNo = "182177860581600744248652",
-            //    payTime = t,
-            //    subject = "HDLY002",
-            //    orderStatus = "PAY_SUC",
-            //    discountAmount = 0,
-            //    channelDiscount = 0,
-            //    paymentWay = "QRCODE",
-            //    buyerId = "oiArOs_2AWBBP4aKObRNGZm132fw",
-            //    outOrderNo = "4200000678202009188094601099",
-            //    paymentChannel = "WECHAT",
-            //    localOrderNo = "TCWX2009181730594053900616",
-            //    totalAmount = 1,
-            //    receiveAmount = 1
-            //};
+            var res1 = JsonConvert.SerializeObject(newa);
+            var newstr = Sign(res1);
 
-            //var res1 = JsonConvert.SerializeObject(newa);
-            //var newstr = Sign(res1);
-
-            //var res = HttpPostForm.FormHttpPost("http://localhost:51114/api/pay/ManjiNotify_HN", newstr);
+            var res22 = HttpPostForm.FormHttpPost("http://localhost:51114/api/pay/ManjiNotify_HN", newstr);
 
             //decimal de = 1.2m;
             //var data1 = (int)de;
@@ -374,7 +376,7 @@ namespace Demo
             //var newDic2 = JsonConvert.DeserializeObject<SortedDictionary<string, object>>(JsonConvert.SerializeObject(dic));
             //newDic.OrderBy(s => s.Key);
 
-
+            
 
 
 

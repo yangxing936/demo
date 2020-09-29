@@ -78,6 +78,7 @@
     <Compile Include="ExportExcel.cs" />
     <Compile Include="GetUrlData.cs" />
     <Compile Include="HttpClientHelper.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="manjiEnum.cs" />
     <Compile Include="Md5.cs" />
     <Compile Include="Md5Helper.cs" />
