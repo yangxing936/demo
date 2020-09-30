@@ -382,7 +382,7 @@ namespace Demo
 
 
 
-            #endregion
+
             //var number = StrRandom(32, true).ToLower();
             //var guid = Guid.NewGuid().ToString("N");
 
@@ -416,10 +416,35 @@ namespace Demo
             //Console.WriteLine(c);
             //Console.WriteLine(JsonConvert.SerializeObject(c));
 
-            var res = HttpClientHelper.Get("http://localhost:53678/", "api/wxprogram/Test");
-            Console.WriteLine(ss(res).Message);
 
 
+            #endregion
+
+
+
+            //var res = HttpClientHelper.Get("http://localhost:53678/", "api/wxprogram/Test");
+            //Console.WriteLine(ss(res).Message);
+
+            for (int i = 0; i < 100; i++)
+            {
+
+                Thread.Sleep(10);
+                Random random = new Random();
+                var randomNumber = random.Next(100000, 999999);
+                TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                var longTime = Convert.ToInt64(ts.TotalMilliseconds).ToString();
+                var number = StrRandom(90, true);
+                if (number.IndexOf("00") >= 0)
+                {
+                    continue;
+                }
+                if (i == 99)
+                {
+                    Console.WriteLine("99");
+                    break;
+                }
+                Console.WriteLine($"{randomNumber}{longTime}{number}");
+            }
 
             Console.Read();
         }

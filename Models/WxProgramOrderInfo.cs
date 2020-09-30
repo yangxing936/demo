@@ -124,14 +124,14 @@ namespace Models.WxProgramOrderInfo
         public string pay_info { get; set; }
         public string MyProperty { get; set; }
     }
-    public class pay_list 
+    public class pay_list
     {
         public string source { get; set; }
         public float amount { get; set; }
         public float storepay { get; set; }
         public string serilNo { get; set; }
     }
-    public class wlife 
+    public class wlife
     {
         public string cno { get; set; }
         public string name { get; set; }
@@ -139,5 +139,55 @@ namespace Models.WxProgramOrderInfo
         public string grade_name { get; set; }
         public string balance { get; set; }
         public string credit { get; set; }
+    }
+    public class SaulPayCheckData
+    {
+        public string oid { get; set; }
+        public float amount { get; set; }
+        public string source { get; set; }
+        public WeixDiscount discount_info { get; set; }
+        public Array cpq_info { get; set; }
+        public Array couponsused { get; set; }
+        public discountCoupon discountCoupon { get; set; }
+    }
+    public class WeixDiscount
+    {
+        public int dsid { get; set; }
+        public string title { get; set; }
+        public float money { get; set; }
+        public int type { get; set; }
+        public int memberPriceType { get; set; }
+        public string discountCouponId { get; set; }
+    }
+    public class discountCoupon
+    {
+        public string couponid { get; set; }
+        public float discount { get; set; }
+        public Array discountNos { get; set; }
+        public int discountScope { get; set; }
+    }
+    public class SaulPayMemberInfo
+    {
+        public string cno { get; set; }
+        public string grade { get; set; }
+        public string grade_name { get; set; }
+        public string name { get; set; }
+        public string memberphone { get; set; }
+        public float balance { get; set; }
+        public float credit { get; set; }
+    }
+    public class members
+    {
+        public float balance { get; set; }
+        public int charge_mode { get; set; }
+        public string cno { get; set; }
+        public Array coupons { get; set; }
+        public float credit { get; set; }
+        public string grade { get; set; }
+        public string mobile { get; set; }
+        public string name { get; set; }
+        public string openid { get; set; }
+        public float ratio { get; set; }
+        public string viptype { get; set; }
     }
 }

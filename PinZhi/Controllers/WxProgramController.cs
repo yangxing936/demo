@@ -98,11 +98,12 @@ namespace PinZhi.Controllers
         /// <returns></returns>
         [Route("api/wxprogram/tableStatus")]
         [HttpPost]
-        public MessageModel tableStatus(string tableno)
+        public MessageModel tableStatus(string tableno, string outorderid = "")
         {
             var res = HttpClientHelper.Post(WxProgram.Url, WxProgram.tableStatus, JsonConvert.SerializeObject(new
             {
-                tableno = tableno
+                tableno = tableno,
+                outorderid = outorderid
             }));
             return new MessageModel() { Code = 0, data = null, Message = res };
         }
@@ -117,14 +118,51 @@ namespace PinZhi.Controllers
         /// <returns></returns>
         [Route("api/wxprogram/dishesSend")]
         [HttpPost]
-        public MessageModel dishesSend(string identify, string id, string openid, object order_info)
+        public MessageModel dishesSend(string identify, string id, string openid)
         {
+            Models.WxProgramOrderInfo.discount_info discount_Info = new Models.WxProgramOrderInfo.discount_info();
+            Models.WxProgramOrderInfo.member member = new Models.WxProgramOrderInfo.member();
+            Models.WxProgramOrderInfo.ordermemo ordermemo = new Models.WxProgramOrderInfo.ordermemo();
+            List<Models.WxProgramOrderInfo.normalitems> normalitem = new List<Models.WxProgramOrderInfo.normalitems>();
+            Models.WxProgramOrderInfo.saulPayPull saulPayPull = new Models.WxProgramOrderInfo.saulPayPull();
+            WxProgramOrderInfo order_Info = new WxProgramOrderInfo()
+            {
+                balance = "",
+                brand_id = "",
+                business_id = "",
+                cost = 0,
+                cpqflag = "",
+                cpqRules = "",
+                credit = "",
+                discountable = 0,
+                discounts = new string[] { },
+                discount_info = discount_Info,
+                djqflag = "",
+                djqRules = "",
+                id = "",
+                identify = "",
+                mealfee = 0,
+                member = member,
+                membercouponsprice = 0,
+                msgId = "",
+                normalitems = normalitem,
+                ordermemo = ordermemo,
+                out_order_id = "",
+                people = "",
+                saulPayPull = saulPayPull,
+                setmeal = new string[] { },
+                shop_name = "",
+                tableno = "",
+                total = 0,
+                update_time = "",
+                weiXinPay = ""
+            };
             var res = HttpClientHelper.Post(WxProgram.Url, WxProgram.dishesSend, JsonConvert.SerializeObject(new
             {
                 identify = identify,
                 id = id,
                 openid = openid,
-                order_info = order_info
+                order_info = order_Info
             }));
             return new MessageModel() { Code = 0, data = null, Message = res };
         }
@@ -132,6 +170,7 @@ namespace PinZhi.Controllers
         /// <summary>
         /// 支付上传订单（仅计算金额）
         /// </summary>
+        /// 结账页面进行营销计算，计算订单应收金额用
         /// <param name="openid"></param>
         /// <param name="tableno"></param>
         /// <param name="out_order_id"></param>
@@ -142,13 +181,15 @@ namespace PinZhi.Controllers
         [HttpPost]
         public MessageModel payLock(string openid, string tableno, string out_order_id, string table_sno, string identify)
         {
+            members member = new members();
             var res = HttpClientHelper.Post(WxProgram.Url, WxProgram.payLock, JsonConvert.SerializeObject(new
             {
                 openid = openid,
                 tableno = tableno,
                 out_order_id = out_order_id,
                 table_sno = table_sno,
-                identify = identify
+                identify = identify,
+                member = member
             }));
             return new MessageModel() { Code = 0, data = null, Message = res };
         }
@@ -156,6 +197,7 @@ namespace PinZhi.Controllers
         /// <summary>
         /// 后付预结并锁单
         /// </summary>
+        /// 结账页面选择支付方式时，进行收银锁单。收银通过锁单请求进行桌台的锁定处理
         /// <param name="openid"></param>
         /// <param name="tableno"></param>
         /// <param name="out_order_id"></param>
@@ -166,13 +208,28 @@ namespace PinZhi.Controllers
         [HttpPost]
         public MessageModel lockUrl(string openid, string tableno, string out_order_id, string table_sno, string identify)
         {
+            members members = new members()
+            {
+                name = "",
+                balance = 0,
+                charge_mode = 0,
+                cno = "",
+                coupons = new string[] { },
+                credit = 0,
+                grade = "",
+                mobile = "",
+                openid = "",
+                ratio = 0,
+                viptype = ""
+            };
             var res = HttpClientHelper.Post(WxProgram.Url, WxProgram.lockUrl, JsonConvert.SerializeObject(new
             {
                 openid = openid,
                 tableno = tableno,
                 out_order_id = out_order_id,
                 table_sno = table_sno,
-                identify = identify
+                identify = identify,
+                member = members
             }));
             return new MessageModel() { Code = 0, data = null, Message = res };
         }
@@ -180,14 +237,40 @@ namespace PinZhi.Controllers
         /// <summary>
         /// 后付支付清台
         /// </summary>
+        /// <param name="table">桌台速记码</param>
         /// <returns></returns>
         [Route("api/wxprogram/pay")]
         [HttpPost]
-        public MessageModel pay()
+        public MessageModel pay(string table)
         {
+            discountCoupon discountCoupon = new discountCoupon();
+            WeixDiscount weixDiscount = new WeixDiscount();
+            SaulPayCheckData saulPayCheckData = new SaulPayCheckData()
+            {
+                amount = 0,
+                couponsused = new string[] { },
+                cpq_info = new string[] { },
+                discountCoupon = discountCoupon,
+                discount_info = weixDiscount,
+                oid = "",
+                source = "",
+            };
+            SaulPayMemberInfo saulPayMemberInfo = new SaulPayMemberInfo()
+            {
+                balance = 0,
+                cno = "",
+                credit = 0,
+                grade = "",
+                grade_name = "",
+                memberphone = "",
+                name = ""
+            };
             var res = HttpClientHelper.Post(WxProgram.Url, WxProgram.pay, JsonConvert.SerializeObject(new
             {
-
+                table = table,
+                data = saulPayCheckData,
+                pay_info = new string[] { },
+                wlife = saulPayMemberInfo
             }));
             return new MessageModel() { Code = 0, data = null, Message = res };
         }
@@ -195,7 +278,7 @@ namespace PinZhi.Controllers
         /// <summary>
         /// 解锁桌台
         /// </summary>
-        /// <param name="out_order_id"></param>
+        /// <param name="out_order_id">外部订单号</param>
         /// <returns></returns>
         [Route("api/wxprogram/orderUnlock")]
         [HttpPost]
@@ -215,17 +298,73 @@ namespace PinZhi.Controllers
         /// <returns></returns>
         [Route("api/wxprogram/preCalculation")]
         [HttpPost]
-        public MessageModel preCalculation(string out_order_id)
+        public MessageModel preCalculation(string identify)
         {
+            Models.WxProgramOrderInfo.wlife wlife = new Models.WxProgramOrderInfo.wlife();
+            List<Models.WxProgramOrderInfo.pay_list> pay_Info = new List<pay_list>();
+            Models.WxProgramOrderInfo.data data = new Models.WxProgramOrderInfo.data();
+            Models.WxProgramOrderInfo.discount_info discount_Info = new Models.WxProgramOrderInfo.discount_info();
+            Models.WxProgramOrderInfo.member member = new Models.WxProgramOrderInfo.member();
+            Models.WxProgramOrderInfo.ordermemo ordermemo = new Models.WxProgramOrderInfo.ordermemo();
+            List<Models.WxProgramOrderInfo.normalitems> normalitem = new List<Models.WxProgramOrderInfo.normalitems>();
+            Models.WxProgramOrderInfo.saulPayPull saulPayPull = new Models.WxProgramOrderInfo.saulPayPull();
+            WxProgramOrderInfo order_Info = new WxProgramOrderInfo()
+            {
+                balance = "",
+                brand_id = "",
+                business_id = "",
+                cost = 0,
+                cpqflag = "",
+                cpqRules = "",
+                credit = "",
+                discountable = 0,
+                discounts = new string[] { },
+                discount_info = discount_Info,
+                djqflag = "",
+                djqRules = "",
+                id = "",
+                identify = "",
+                mealfee = 0,
+                member = member,
+                membercouponsprice = 0,
+                msgId = "",
+                normalitems = normalitem,
+                ordermemo = ordermemo,
+                out_order_id = "",
+                people = "",
+                saulPayPull = saulPayPull,
+                setmeal = new string[] { },
+                shop_name = "",
+                tableno = "",
+                total = 0,
+                update_time = "",
+                weiXinPay = ""
+            };
+
+            pay_infos pay_info = new pay_infos()
+            {
+                action = "",
+                address = "",
+                create_time = 0,
+                create_time_str = "",
+                data = data,
+                pay_info = pay_Info,
+                table = "",
+                type = "",
+                wlife = wlife
+            };
             var res = HttpClientHelper.Post(WxProgram.Url, WxProgram.preCalculation, JsonConvert.SerializeObject(new
             {
-                out_order_id = out_order_id
+                identify = identify,
+                order_info = order_Info
             }));
             return new MessageModel() { Code = 0, data = null, Message = res };
         }
 
         /// <summary>
-        /// 先付结账清台接口
+        /// 先付结账清台接口 
+        /// 推单失败需要重复推送 
+        /// 推送不成功改订单状态为异常
         /// </summary>
         /// <param name="identify"></param>
         /// <returns></returns>
@@ -289,7 +428,9 @@ namespace PinZhi.Controllers
 
             var res = HttpClientHelper.Post(WxProgram.Url, WxProgram.prePay, JsonConvert.SerializeObject(new
             {
-                identify = identify
+                identify = identify,
+                order_info = order_Info,
+                pay_info = pay_info
             }));
 
             if (res.IndexOf("0") >= 0) //重新推送
@@ -317,14 +458,13 @@ namespace PinZhi.Controllers
                     }
                 }
             }
-
             return new MessageModel() { Code = 0, data = null, Message = res };
         }
 
         /// <summary>
         /// 订单等待状态接口
         /// </summary>
-        /// <param name="outorderid"></param>
+        /// <param name="outorderid">平台订单id</param>
         /// <returns></returns>
         [Route("api/wxprogram/orderWaitStatus")]
         [HttpPost]
@@ -337,12 +477,12 @@ namespace PinZhi.Controllers
             return new MessageModel() { Code = 0, data = null, Message = res };
         }
 
-        [Route("api/wxprogram/Test")]
-        [HttpGet]
-        public string Test()
-        {
-            return "31230312";
-        }
+
+
+
+
+
+
         #endregion
     }
 }
