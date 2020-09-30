@@ -17,6 +17,8 @@ using NPOI.XWPF.UserModel;
 using System.Xml;
 using System.Reflection;
 using System.ComponentModel;
+using Models;
+using Org.BouncyCastle.Utilities.Encoders;
 
 namespace Demo
 {
@@ -195,7 +197,7 @@ namespace Demo
 
 
 
-            var res = Math.Round((20.0 / 18), 2);
+            //var res = Math.Round((20.0 / 18), 2);
 
             //Data data = new Data()
             //{
@@ -335,33 +337,33 @@ namespace Demo
             //var data = Sign(JsonConvert.SerializeObject(str));
 
 
-            LogHelper.Log("123");
+            //LogHelper.Log("123");
 
-            DateTime dateTime = DateTime.Parse("2020-09-21 11:07:34");
-            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
-            long t = (dateTime.Ticks - startTime.Ticks) / 10000;   //除10000调整为13位      
-            var newa = new
-            {
-                platformDiscount = 0,
-                appOrderNo = "182177860581601205431675",
-                payTime = t,
-                subject = "HDLY002",
-                orderStatus = "PAY_SUC",
-                discountAmount = 0,
-                channelDiscount = 0,
-                paymentWay = "QRCODE",
-                buyerId = "o5WHe4qfPGsplEAPbh2myqNuRtLo",
-                outOrderNo = "4200000678202009188094601099",
-                paymentChannel = "WECHAT",
-                localOrderNo = "TCWX2009181730594053900616",
-                totalAmount = 1,
-                receiveAmount = 1
-            };
+            //DateTime dateTime = DateTime.Parse("2020-09-21 11:07:34");
+            //System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1, 0, 0, 0, 0));
+            //long t = (dateTime.Ticks - startTime.Ticks) / 10000;   //除10000调整为13位      
+            //var newa = new
+            //{
+            //    platformDiscount = 0,
+            //    appOrderNo = "182177860581601205431675",
+            //    payTime = t,
+            //    subject = "HDLY002",
+            //    orderStatus = "PAY_SUC",
+            //    discountAmount = 0,
+            //    channelDiscount = 0,
+            //    paymentWay = "QRCODE",
+            //    buyerId = "o5WHe4qfPGsplEAPbh2myqNuRtLo",
+            //    outOrderNo = "4200000678202009188094601099",
+            //    paymentChannel = "WECHAT",
+            //    localOrderNo = "TCWX2009181730594053900616",
+            //    totalAmount = 1,
+            //    receiveAmount = 1
+            //};
 
-            var res1 = JsonConvert.SerializeObject(newa);
-            var newstr = Sign(res1);
+            //var res1 = JsonConvert.SerializeObject(newa);
+            //var newstr = Sign(res1);
 
-            var res22 = HttpPostForm.FormHttpPost("http://localhost:51114/api/pay/ManjiNotify_HN", newstr);
+            //var res22 = HttpPostForm.FormHttpPost("http://localhost:51114/api/pay/ManjiNotify_HN", newstr);
 
             //decimal de = 1.2m;
             //var data1 = (int)de;
@@ -376,14 +378,95 @@ namespace Demo
             //var newDic2 = JsonConvert.DeserializeObject<SortedDictionary<string, object>>(JsonConvert.SerializeObject(dic));
             //newDic.OrderBy(s => s.Key);
 
-            
+
 
 
 
             #endregion
-            var number = StrRandom(32, true).ToLower();
-            var guid = Guid.NewGuid().ToString("N");
+            //var number = StrRandom(32, true).ToLower();
+            //var guid = Guid.NewGuid().ToString("N");
+
+
+
+
+            //Dictionary<string, object> dic = new Dictionary<string, object>();
+            //dic.Add("x2", "1");
+            //dic.Add("52", "2");
+            //dic.Add("a2", "3");
+            //dic.Add("g2", "4");
+            //dic.Add("kwea2", "1");
+            //dic.Add("3oor", "43");
+            //dic.Add("oop", "as");
+            //dic.Add("g", "fll");
+            //dic.Add("v", "oodsf");
+            //dic.Add("x1", "3213");
+            //dic = dic.OrderBy(s => s.Key).ToDictionary(s => s.Key, p => p.Value);
+
+            //var dicSort = from objDic in dic orderby objDic.Key ascending select objDic;
+            //var s3 = dicSort.ToDictionary(s => s.Key, s => s.Value);
+
+
+
+
+            //var str = new { a = "1", b = "2", c = 3 };
+            //var data = newTojson(str);
+
+
+            //Array c = new string[] { };
+            //Console.WriteLine(c);
+            //Console.WriteLine(JsonConvert.SerializeObject(c));
+
+            var res = HttpClientHelper.Get("http://localhost:53678/", "api/wxprogram/Test");
+            Console.WriteLine(ss(res).Message);
+
+
+
             Console.Read();
+        }
+
+        public static MessageModel ss(string res)
+        {
+            if (res.IndexOf("0") >= 0) //重新推送
+            {
+                for (int i = 1; i <= 3; i++)
+                {
+                    Thread.Sleep(2 * 1000);
+                    res = HttpClientHelper.Get("http://localhost:53678/", "api/wxprogram/Test");
+                    if (i == 3 && res.IndexOf("0") >= 0) //推送三次失败 订单异常
+                    {
+                        Console.WriteLine("第3次推单失败,订单异常");
+                        return new MessageModel() { Code = 0, data = null, Message = "订单异常" };
+                    }
+                    if (res.IndexOf("0") >= 0)
+                    {
+                        Console.WriteLine($"第{i}次推单,{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
+                        continue;
+                    }
+                    else
+                    {
+                        return new MessageModel() { Code = 0, data = null, Message = res };
+                    }
+                }
+            }
+            return new MessageModel() { Code = 0, data = null, Message = res };
+
+        }
+
+
+        public static string newTojson(object news)
+        {
+            string str = "";
+            var newstr = news.ToString().Replace("=", ":");
+            var dic_json = JsonConvert.DeserializeObject<Dictionary<string, object>>(newstr);
+            dic_json.OrderBy(s => s.Key);
+            foreach (var item in dic_json)
+            {
+                str += item.Key + "=" + item.Value;
+                str += "&";
+            }
+            str = str.Trim('&');
+
+            return str;
         }
 
         /// <summary>

@@ -138,7 +138,11 @@ namespace Models
         /// <summary>
         /// 小程序营销活动接口 get请求
         /// </summary>
-        public static string list = "http://domain.com/api/activies/list";
+        public static string list = "api/activies/list";
+        /// <summary>
+        /// 小程序营销活动接口基地址  get请求
+        /// </summary>
+        public static string list_baseUrl = "http://domain.com/";
         /// <summary>
         /// 收银退菜菜通知
         /// </summary>
@@ -159,6 +163,68 @@ namespace Models
         /// <summary>
         /// 查询订单实际支付数据结果
         /// </summary>
-        public static string payInfo_url = "/tool/payInfo/";
+        public static string payInfo_url = "tool/payInfo/";
+    }
+
+    public class WxProgram 
+    {
+        public static string Url = "http://ip:port/";
+        /// <summary>
+        /// 获取门店基础数据
+        /// </summary>
+        public static string syncDishes= "pzcatering-web/weix/syncDishes.do";
+        /// <summary>
+        /// 订单等待状态接口
+        /// </summary>
+        public static string orderWaitStatus = "pzcatering-gateway/weix/orderWaitStatus.do";
+        /// <summary>
+        /// 门店营业状态
+        /// </summary>
+        public static string shopStatus = "pzcatering-api/wx/shopStatus.do";
+        /// <summary>
+        /// 沽清菜品接口
+        /// </summary>
+        public static string dishSellOff = "pzcatering-api/wx/dishSellOff.do";
+        /// <summary>
+        /// 获取发票码
+        /// </summary>
+        public static string invoice = "pzcatering-api/wx/invoice.do";
+        /// <summary>
+        /// 查询桌态接口
+        /// </summary>
+        public static string tableStatus = "pzcatering-api/wx/tableStatus.do";
+        /// <summary>
+        /// 微信后付下单接口
+        /// </summary>
+        public static string dishesSend = "pzcatering-api/wx/dishesSend.do";
+        /// <summary>
+        /// 支付上传订单接口（仅预结，不锁单）
+        /// </summary>
+        public static string payLock = "pzcatering-api/wx/payLock";
+        /// <summary>
+        /// 后付锁单接口
+        /// </summary>
+        public static string lockUrl = "pzcatering-api/wx/lock";
+        /// <summary>
+        /// 后付支付清台接口
+        /// </summary>
+        public static string pay = "pzcatering-api/wx/pay";
+        /// <summary>
+        /// 解锁桌台接口
+        /// </summary>
+        public static string orderUnlock = "pzcatering-api/wx/orderUnlock.do";
+        /// <summary>
+        /// 先付门店计算金额接口
+        /// </summary>
+        public static string preCalculation = "pzcatering-api/wx/preCalculation.do";
+        /// <summary>
+        /// 先付结账清台接口
+        /// </summary>
+        public static string prePay = "pzcatering-api/wx/prePay.do";
+        /// <summary>
+        /// 订单等待状态接口
+        /// </summary>
+        public static string orderWaitStatus_url = "pzcatering-api/wx/orderWaitStatus.do";
+
     }
 }

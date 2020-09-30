@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class order_info
+    public class OrderInfo
     {
         public string identify { get; set; }
         public string out_order_id { get; set; }
@@ -19,13 +19,11 @@ namespace Models
         public List<setmeal> setmeal { get; set; }
         public member member { get; set; }
     }
-
     public class ordermemo
     {
         public Array id { get; set; }
         public string text { get; set; }
     }
-
     public class normalitems
     {
         public int did { get; set; }
@@ -62,7 +60,6 @@ namespace Models
         public string id { get; set; }
         public string cook { get; set; }
     }
-
     public class member
     {
         public string openid { get; set; }
