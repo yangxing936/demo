@@ -29,7 +29,15 @@ namespace Models
                         dic.Add(item.Name, value);
                     }
                 }
-                dic.OrderBy(s => s.Key);
+                if (dic.Count > 0)
+                {
+                    dic = (from ds in dic orderby ds.Key ascending select ds).ToDictionary(s => s.Key, s => s.Value);
+                }
+                else
+                {
+                    return "";
+                }
+
 
                 foreach (var item in dic)
                 {

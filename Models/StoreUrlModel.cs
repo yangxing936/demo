@@ -166,7 +166,7 @@ namespace Models
         public static string payInfo_url = "tool/payInfo/";
     }
 
-    public class WxProgram 
+    public class WxProgram
     {
         public static string Url = "http://ip:port/";
         /// <summary>

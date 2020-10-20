@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,16 +32,26 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.6\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Dos.ORM, Version=1.18.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dos.ORM.1.18.0\lib\net40\Dos.ORM.dll</HintPath>
+    </Reference>
+    <Reference Include="Dos.ORM.MySql, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dos.ORM.MySql.2.2.0\lib\net40\Dos.ORM.MySql.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="MD5, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MD5.2.0.0\lib\netstandard2.0\MD5.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.12\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -57,9 +68,16 @@
     <Reference Include="NPOI.OpenXmlFormats, Version=2.5.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.5.1\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="Plugin.TextToSpeech, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugins.TextToSpeech.4.0.0.7\lib\netstandard2.0\Plugin.TextToSpeech.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,13 +90,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assss.cs" />
     <Compile Include="Base64.cs" />
+    <Compile Include="DosDb.cs" />
+    <Compile Include="DosSelect.cs" />
+    <Compile Include="PzDbcontext.cs" />
+    <Compile Include="DbEnum.cs" />
     <Compile Include="HttpPostForm.cs" />
     <Compile Include="DESHelper.cs" />
     <Compile Include="ExcelHelper.cs" />
     <Compile Include="ExportExcel.cs" />
     <Compile Include="GetUrlData.cs" />
     <Compile Include="HttpClientHelper.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="manjiEnum.cs" />
     <Compile Include="Md5.cs" />
@@ -95,6 +119,17 @@
       <Project>{CB855244-9EAD-4AEE-9189-919565AF1B06}</Project>
       <Name>Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{e53c1fd3-1eaf-4c7d-9f51-6339938f7fe5}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SqlSugar\SqlSugar.csproj">
+      <Project>{9406f5f5-783d-4a86-a2a4-d4566dba9346}</Project>
+      <Name>SqlSugar</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
