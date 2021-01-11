@@ -9,6 +9,26 @@ namespace Demo
 {
     public class LogHelper
     {
+
+        static string _LogPath = string.Format(@"{0}\Log\{1}\", AppDomain.CurrentDomain.BaseDirectory, DateTime.Today.ToString("yyyyMMdd"));
+        public static void WriteLog(string logFile, string msg)
+        {
+            try
+            {
+
+                if (!Directory.Exists(_LogPath)) { Directory.CreateDirectory(_LogPath); }
+                string filePath = string.Format(@"{0}{1}.log", _LogPath, logFile);
+                System.IO.File.AppendAllText(filePath,
+                string.Format("{0} {1}\r\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), msg), Encoding.GetEncoding("UTF-8"));
+            }
+            catch
+            {
+
+            }
+        }
+
+
+
         /// <summary>
         /// 记录log
         /// </summary>
@@ -20,14 +40,12 @@ namespace Demo
         {
             try
             {
-                List<manjiEnum> manjiEnums = new List<manjiEnum>();
                 var date = DateTime.Now.ToString("yyyyMMdd");
                 var dir = AppDomain.CurrentDomain.BaseDirectory + "\\" + folderName;
                 if (isDateFolder) //表示目录下按日期分
                 {
                     dir += $"\\{date}";
                 }
-                var a = manjiEnums[1].GetType();
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
@@ -49,9 +67,9 @@ namespace Demo
             catch (Exception)
             {
 
-              
+
             }
-         
+
 
         }
     }

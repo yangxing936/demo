@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Assss.cs" />
     <Compile Include="Base64.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="DosDb.cs" />
     <Compile Include="DosSelect.cs" />
     <Compile Include="PzDbcontext.cs" />
